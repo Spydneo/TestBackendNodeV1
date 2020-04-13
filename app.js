@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var app = express();
 
 //Cargar ficheros rutas
+var article_routes = require('./routes/article');
 
 //Middlewares
 app.use(bodyParser.urlencoded({ extended: false })); //Cargar el bodyparser
@@ -16,11 +17,8 @@ app.use(bodyParser.json()); //Convertir cualquier petición en JSON
 //CORS
 
 //Añadir prefijos a las rutas
+app.use('/api', article_routes);
 
-//Ruta o método de prueba
-app.post('/probando', (req, response) => {
-    var name = req.body.nombre;
-    return response.status(200).send({ message: 'hola ' + name })
-});
+
 //Exportar módulo (fichero actual)
 module.exports = app;
