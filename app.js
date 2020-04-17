@@ -16,7 +16,7 @@ app.use(bodyParser.json()); //Convertir cualquier petición en JSON
 
 //CORS
 
-//Añadir prefijos a las rutas
+//Añadir prefijos a las rutas / Cargar rutas
 app.use('/api', article_routes);
 
 
