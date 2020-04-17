@@ -88,12 +88,42 @@ var controller = {
                     message: 'No hay artículos'
                 });
             }
+            //Devolver artículos
             return res.status(200).send({
                 status: 'Ok',
                 articles
             });
 
         })
+    },
+    getArticle: (req, res) => {
+        //Recoger el id de la url
+        var articleId = req.params.id;
+        //Comprobar si existe
+        if (!articleId || articleId == null) {
+            return res.status(404).send({
+                status: 'error',
+                message: 'No hay id'
+            })
+        }
+        //Buscar el artículos
+        Article.findById(articleId, (err, article) => {
+
+            if (err || !article) {
+                return res.status(404).send({
+                    status: 'error',
+                    message: 'No existe el artículo'
+                })
+            }
+            //Devolver artículo
+            return res.status(200).send({
+                status: 'Succes',
+                article
+            });
+        })
+
+
+
     }
 
 };
