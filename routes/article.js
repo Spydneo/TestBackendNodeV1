@@ -10,5 +10,6 @@ router.post('/datos-curso', ArticleController.datosCurso);
 router.get('/test-controlador', ArticleController.test);
 //Rutas útilies
 router.post('/save', ArticleController.save);
+router.get('/articles', ArticleController.getArticles);
 
 module.exports = router;

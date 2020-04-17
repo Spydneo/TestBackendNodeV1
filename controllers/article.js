@@ -63,6 +63,28 @@ var controller = {
         }
 
 
+    },
+    getArticles: (req, res) => {
+        //Find
+        Article.find({}).sort('-id').exec((err, articles) => {
+            if (err) {
+                return res.status(500).send({
+                    status: 'error',
+                    message: 'Error al obtener los artículos'
+                });
+            }
+            if (!articles) {
+                return res.status(404).send({
+                    status: 'error',
+                    message: 'No hay artículos'
+                });
+            }
+            return res.status(200).send({
+                status: 'Ok',
+                articles
+            });
+
+        })
     }
 
 };
