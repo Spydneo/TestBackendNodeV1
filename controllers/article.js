@@ -122,18 +122,15 @@ var controller = {
             });
         })
     },
-    update: ((req, res) => {
+    update: (req, res) => {
         //Recoger el id del artículo por la url
         var articleId = req.params.id;
         //Recoger los datos que llegan por put
         var params = req.body;
-        console.log("body title: " + params.title);
         //validar datos
         try {
             var validate_title = !validator.isEmpty(params.title);
             var validate_content = !validator.isEmpty(params.content);
-            console.log("title1: " + validate_title);
-            console.log("content1: " + validate_content);
         } catch (err) {
             return res.status(400).send({
                 status: 'error',
@@ -142,8 +139,6 @@ var controller = {
         }
 
         if (validate_title && validate_content) {
-            console.log("title: " + validate_title);
-            console.log("content: " + validate_content);
             //Find an update
             Article.findOneAndUpdate({ _id: articleId }, params, { new: true }, (err, articleUpdated) => {
                 if (err) {
@@ -173,7 +168,31 @@ var controller = {
             });
         }
 
-    })
+    },
+
+    delete: (req, res) => {
+        var articleId = req.params.id;
+
+        Article.findByIdAndDelete({ _id: articleId }, (err, articleRemoved) => {
+            if (err) {
+                return res.status(500).send({
+                    status: 'error',
+                    message: 'Error al borrar el artículo'
+                });
+            }
+            if (!articleRemoved) {
+                return res.status(404).send({
+                    status: 'error',
+                    message: 'No existe el artículo'
+                });
+            }
+            return res.status(200).send({
+                status: 'Succes',
+                article: articleRemoved
+            });
+
+        });
+    }
 
 };
 //end controller
