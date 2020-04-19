@@ -263,7 +263,7 @@ var controller = {
         Article.find({
                 "$or": [
                     { "title": { "$regex": searchString, "$options": "i" } },
-                    { "content": { "regex": searchString, "$options": "i" } }
+                    { "content": { "$regex": searchString, "$options": "i" } }
                 ]
             })
             .sort([
@@ -278,7 +278,7 @@ var controller = {
                         string: searchString
                     });
                 }
-                if (!articles) {
+                if (!articles || articles.length <= 0) {
                     return res.status(404).send({
                         status: "error",
                         message: 'No hay artículos que coincidan con tu busqueda'
