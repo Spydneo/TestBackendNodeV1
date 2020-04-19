@@ -169,7 +169,6 @@ var controller = {
         }
 
     },
-
     delete: (req, res) => {
         var articleId = req.params.id;
 
@@ -191,6 +190,39 @@ var controller = {
                 article: articleRemoved
             });
 
+        });
+    },
+    upload: (req, res) => {
+        //configurar el módulo connect multiparty router/article.js
+        //Recoger el fichero de la petición
+        var file_name = 'Imagen no subida...';
+
+        if (!req.files) {
+            return res.status(404).send({
+                status: 'error',
+                message: file_name
+            });
+        }
+        //Conseguir nombre y la extensión del archivo
+        var file_path = req.files.file0.path;
+        var file_split = file_path.split('\\'); // Unix '/'
+        file_name = file_split[2];
+        var file_ext = file_split[2].split('.')[1];
+        //Comprobar la extensión, solo imagenes, si es valida borrar el fichero
+        if (file_ext != 'png' && file_ext != 'jpg' && file_ext != 'jpeg' && file_ext != 'gif') {
+            //Borrar el archivo
+        } else {
+            //Si todo es valido
+
+            //Buscar el artículo, asignarle el nombre de la imagen y actualizarlos
+
+        }
+        return res.status(500).send({
+            status: 'error',
+            message: 'Error al borrar el artículo',
+            file: req.files,
+            split: file_split,
+            ext: file_ext
         });
     }
 
