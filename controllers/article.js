@@ -240,6 +240,21 @@ var controller = {
 
         }
     }, //End upload
+    getImage: (req, res) => {
+        var file = req.params.image;
+        var path_file = './upload/articles/' + file;
+
+        fs.exists(path_file, (exist) => {
+            if (exist) {
+                return res.sendFile(path.resolve(path_file))
+            } else {
+                return res.status(200).send({
+                    status: "error",
+                    message: 'La imagen no existe !!!'
+                });
+            }
+        })
+    }
 
 };
 //end controller
