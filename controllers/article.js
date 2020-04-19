@@ -1,6 +1,8 @@
 'use strict'
 
 var validator = require('validator');
+var fs = require('fs');
+var path = require('path');
 var Article = require('../models/article');
 
 var controller = {
@@ -208,23 +210,36 @@ var controller = {
         var file_split = file_path.split('\\'); // Unix '/'
         file_name = file_split[2];
         var file_ext = file_split[2].split('.')[1];
+        file_ext = file_ext.toLowerCase();
         //Comprobar la extensión, solo imagenes, si es valida borrar el fichero
         if (file_ext != 'png' && file_ext != 'jpg' && file_ext != 'jpeg' && file_ext != 'gif') {
             //Borrar el archivo
+            fs.unlink(file_path, (err) => {
+                return res.status(200).send({
+                    status: "error",
+                    message: 'La extensión de la imagen no es valida !!!'
+                });
+            });
         } else {
             //Si todo es valido
+            var articleId = req.params.id;
 
             //Buscar el artículo, asignarle el nombre de la imagen y actualizarlos
+            Article.findOneAndUpdate({ _id: articleId }, { image: file_name }, { new: true }, (err, articleUpdated) => {
+                if (err || !articleUpdated) {
+                    return res.status(200).send({
+                        status: "error",
+                        message: 'Error al guardar la imagen del artículo !!!'
+                    });
+                }
+                return res.status(200).send({
+                    status: 'succes',
+                    article: articleUpdated,
+                });
+            });
 
         }
-        return res.status(500).send({
-            status: 'error',
-            message: 'Error al borrar el artículo',
-            file: req.files,
-            split: file_split,
-            ext: file_ext
-        });
-    }
+    }, //End upload
 
 };
 //end controller
