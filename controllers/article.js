@@ -261,18 +261,9 @@ var controller = {
 
         //Find or, artículo sacar
         Article.find({
-                "$or": [{
-                        "title": {
-                            "$regex": "artículo",
-                            "$options": "i"
-                        }
-                    },
-                    {
-                        "content": {
-                            "regex": "4",
-                            "$options": "i"
-                        }
-                    }
+                "$or": [
+                    { "title": { "$regex": searchString, "$options": "i" } },
+                    { "content": { "regex": searchString, "$options": "i" } }
                 ]
             })
             .sort([
@@ -283,7 +274,7 @@ var controller = {
                 if (err) {
                     return res.status(500).send({
                         status: "error",
-                        message: 'Error en la petición!!',
+                        message: 'Error en la petición',
                         string: searchString
                     });
                 }
@@ -297,7 +288,7 @@ var controller = {
                     status: "succes",
                     articles
                 });
-            })
+            });
     }
 
 };
